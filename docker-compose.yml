@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  web:
+    user: "${UID:-1000}:${GID:-985}"
+    image: php7-alpine
+    environment:
+      - void
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/srv/http
+    command: "php artisan serve --host=0.0.0.0 --port=8080"
+    working_dir: /srv/http
+    links:
+      - postgres
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: testing
+      POSTGRES_DB: movie_app
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
